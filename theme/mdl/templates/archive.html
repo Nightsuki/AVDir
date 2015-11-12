@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block first_title %}{{ archive.title }}{% end %}
+
+{% block body %}
+    <article>
+      <h1 class="title"><a class="pjax" href="/archive/{{ archive.slug }}">{{ archive.title }}</a></h1>
+        <aside class="time">
+            Posted at <time datetime="{{ humantime(archive.published_time, '%Y-%m-%dT%H:%M:%S.000Z') }}">{{ humantime(archive.published_time, '%Y-%m-%d') }}</time>
+        </aside>
+        <section class="post-content">
+            {% raw markdown(archive.content) %}
+        </section>
+        <section class="post-tags">
+            {% if len(archive.get_tags()) > 0 %}
+                <em>Tagged in:
+                {% for tag in archive.get_tags() %}
+                    <a class="pjax" href="/tag/{{ tag }}">{{ tag }}</a>
+                {% end %}
+                </em>
+            {% end %}
+        </section>
+        <section class="post-comments">
+            {% include "comment.html" %}
+        </section>
+    </article>
+{% end %}

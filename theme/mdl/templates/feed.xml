@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+<title>{{ nickname }}</title>
+<subtitle>{{ title }}</subtitle>
+<updated>{{ humantime(archives.first().published_time, '%Y-%m-%d') }}</updated>
+
+<author>
+    <name><![CDATA[ {{ nickname }} ]]></name>
+    <email><![CDATA[ {{ email }} ]]></email>
+</author>
+
+<link href="{{ url }}" />
+<id>{{ url }}</id>
+
+{% for archive in archives %}
+    <entry>
+        <title>{{ archive.title }}</title>
+        <link>https://{{ url }}/archive/{{ archive.slug }}</link>
+        <id>https://{{ url }}/archive/{{ archive.slug }}</id>
+        <published>{{ humantime(archive.published_time, '%Y-%m-%d') }}</published>
+        <content type="html"><![CDATA[{% raw markdown(archive.content) %}]]></content>
+    </entry>
+{% end %}
+</feed>

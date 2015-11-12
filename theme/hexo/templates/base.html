@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{% block first_title %}{% end %} - {{ title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="{{ description }}">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{ title }}">
+    <meta property="og:url" content="https://ymr.me/">
+    <meta property="og:site_name" content="{{ title }}">
+    <meta property="og:description" content="{{ description }}">
+
+    <link rel="icon" href="/favicon.png">
+    <link rel="stylesheet" href="{{ static_url('fancybox/jquery.fancybox.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ static_url('css/material.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ static_url('css/style.css') }}" type="text/css">
+
+</head>
+<body>
+<div id="container">
+    {% include "nav.html" %}
+    <div class="mid-col">
+        {% include "mobile-nav.html" %}
+        {% block body %}{% end %}
+        <footer id="footer">
+            {% include "footer.html" %}
+        </footer>
+</div>
+</div>
+</body>
+</html>

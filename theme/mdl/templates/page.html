@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block first_title %}{{ archive.title }}{% end %}
+
+{% block body %}
+    <article>
+        <section class="post-content">
+            {% raw markdown(archive.content) %}
+        </section>
+    </article>
+    <section class="post-comments">
+        {% include "comment.html" %}
+    </section>
+{% end %}

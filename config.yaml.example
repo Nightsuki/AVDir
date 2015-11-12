@@ -1,0 +1,41 @@
+"site":
+  "title": "野蛮人の洞窟"
+  "theme": "mdl"
+  "description": ""
+  "motto": "啦啦啦"
+  "email": "i@ymr.me"
+  "nickname": "Nightsuki"
+  "avatar": "https://ymr.me/logo.png"
+  "url": "https://ymr.me/"
+"database":
+  "dev":
+      "host": "localhost"
+      "port": !!int "3306"
+      "user": "user"
+      "password": "123456"
+      "dbname": "avdir"
+  "prod":
+      "host": "localhost"
+      "port": !!int "3306"
+      "user": "user"
+      "password": "123456"
+      "dbname": "avdir"
+"session":
+  "dev":
+    "db": !!int "10"
+    "host": "localhost"
+    "port": !!int "6379"
+  "prod":
+    "db": !!int "10"
+    "host": "localhost"
+    "port": !!int "6379"
+"cache":
+  "dev":
+    "db": !!int "9"
+    "host": "localhost"
+    "port": !!int "6379"
+  "prod":
+    "db": !!int "9"
+    "host": "localhost"
+    "port": !!int "6379"
+

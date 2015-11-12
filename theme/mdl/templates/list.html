@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block first_title %}Home{% end %}
+
+{% block body %}
+    {% set num = 0 %}
+    {% for archive in archives %}
+        {% set num += 1 %}
+        <article>
+            <h1 class="title"><a class="pjax" href="/archive/{{ archive.slug }}">{{ archive.title }}</a></h1>
+            <aside class="time">
+                Posted at <time datetime="{{ humantime(archive.published_time, '%Y-%m-%dT%H:%M:%S.000Z') }}">{{ humantime(archive.published_time, '%Y-%m-%d') }}</time>
+            </aside>
+            <section class="post-content">
+                {% raw markdown(archive.content) %}
+            </section>
+            <section class="post-tags">
+            {% if len(archive.get_tags()) > 0 %}
+                <em>Tagged in:
+                {% for tag in archive.get_tags() %}
+                    <a class="pjax" href="/tag/{{ tag }}">{{ tag }}</a>
+                {% end %}
+                </em>
+            {% end %}
+            </section>
+        </article>
+        {% if archives.count() != num %}
+            <hr class="post">
+        {% end %}
+    {% end %}
+    <div class="paging">
+        <a href="/page/{{ page - 1 }}" class="{% if page <= 1 %}hide{% end %} pjax">&lsaquo;&lsaquo; Newer</a>
+        <a href="/page/{{ page + 1 }}" class="pjax pull-right {% if page == maxpage %}hide{% end %}">Older &rsaquo;&rsaquo;</a>
+    </div>
+{% end %}

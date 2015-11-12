@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block first_title %}{{ first_title }}{% end %}
+{% block body %}
+<div class="body-wrap">
+
+    {% for group in archives_groups %}
+    <section class="archives-wrap">
+        <div class="archive-year-wrap">
+            <h1>{{ group["year"] }}</h1>
+        </div>
+        <div class="archives">
+            {% for archive in group["archives"] %}
+                <article class="archive-article archive-type-post">
+                <div class="archive-article-inner">
+                    <header class="archive-article-header">
+                        <div class="article-meta">
+                            <a href="/archive/{{ archive.slug }}" class="archive-article-date">
+                                <time datetime="{{ humantime(archive.published_time, '%Y-%m-%dT%H:%M:%S.000Z') }}" itemprop="datePublished">{{ humantime(archive.published_time, "%Y-%m-%d") }}</time>
+                            </a>
+                        </div>
+
+
+                        <h1 itemprop="name">
+                            <a class="archive-article-title" href="/archive/{{ archive.slug }}">{{ archive.title }}</a>
+                        </h1>
+
+
+                        <div class="article-info info-on-right">
+
+                            <div class="article-tag tagcloud">
+                                <ul class="article-tag-list">
+                                {% for tag in archive.get_tags() %}
+                                <li class="article-tag-list-item"><a class="article-tag-list-link"
+                                                                     href="/tag/{{ tag }}">{{ tag }}</a></li>
+                                {% end %}
+                                </ul>
+                            </div>
+
+
+                        </div>
+                        <div class="clearfix"></div>
+                    </header>
+                </div>
+            </article>
+            {% end %}
+        </div>
+    </section>
+    {% end %}
+
+</div>
+{% end %}

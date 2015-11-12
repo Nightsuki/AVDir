@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block first_title %}Tag: {{ first_title }}{% end %}
+{% block body %}
+    <ul>
+        {% for group in archives_groups %}
+        <li>
+            <h1 class="year">{{ group["year"] }}</h1>
+            <ul class="posts-group">
+                {% for archive in group["archives"] %}
+                <li><h2><a class="pjax" href="/archive/{{ archive.slug }}">{{ archive.title }}</a></h2></li>
+                {% end %}
+            </ul>
+        </li>
+        {% end %}
+    </ul>
+{% end %}

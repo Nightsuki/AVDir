@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block first_title %}{% end %} - {{ title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/material.min.css">
+    <link rel="stylesheet" href="/static/css/yue.css">
+    <link rel="stylesheet" href="/static/css/font.css">
+    <link rel="stylesheet" href="/static/css/material-scrolltop.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/jquery.pjax.js"></script>
+    <script src="/static/js/material-scrolltop.js"></script>
+    <script src="/static/js/material-progress.js"></script>
+    {% block head %}{% end %}
+</head>
+
+<body>
+<div id="p2" class="mdl-progress mdl-js-progress mdl-progress__indeterminate progress-bar"></div>
+<div class="mdl-layout__container">
+    <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header has-drawer is-upgraded wrapper" id="top">
+        <div class="mdl-layout__drawer navbar">
+            <header class="demo-drawer-header">
+                <div class="avatar">
+                    <img src="{{ avatar }}">
+                </div>
+                <p class="motto">{{ motto }}</p>
+                <div>
+                    <a class="email mdl-color-text--blue-grey-600" href="mailto:{{ email }}"><i>{{ email }}</i></a>
+                </div>
+            </header>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link pjax" href="/">Home</a>
+                <a class="mdl-navigation__link pjax" href="/archives">Archives</a>
+                <a class="mdl-navigation__link pjax" href="/about">About & Links</a>
+                <a class="mdl-navigation__link" href="/feed">RSS</a>
+                <div class="mdl-layout-spacer"></div>
+                <p class="mdl-nav">Powered by <a target="_blank" href="{{ url }}">AVDir.</a>
+                    <br>All content copyright <a href="mailto:ricterzheng@gmail.com">{{ nickname }}</a> © 2015 • All rights reserved.</p>
+            </nav>
+        </div>
+        <main class="mdl-layout__content yue">
+            <div class="page-content">
+                <div class="mdl-grid">
+                    <div class="mdl-cell mdl-cell--8-col mdl-cell--10-col-tablet container">
+                        {% block body %}
+                        {% end %}
+                    </div>
+                </div>
+            </div>
+        </main>
+        <div class="mdl-layout__obfuscator"></div>
+    </div>
+</div>
+<button class="material-scrolltop" type="button"></button>
+</body>
+<script>
+
+    //TODO: fix bug of scroll to top
+    $('.pjax').click(function() {
+        $('body').animate({
+            scrollTop: 0
+        })
+    });
+
+    $(document).ready(function() {
+        $('body').materialScrollTop({
+            revealElement: 'header',
+            revealPosition: 'bottom'
+        });
+    });
+
+    $(document).on('pjax:start', function() {
+        $('.mdl-progress').show();
+    });
+
+    $(document).on('pjax:end', function() {
+        $('.mdl-progress').hide();
+    });
+
+    // Pjax
+    $(document).pjax('.pjax', '.container');
+
+</script>
+</html>
