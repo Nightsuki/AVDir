@@ -35,7 +35,6 @@
              * @description src正常
              */
             var imgload = function (e, target) {
-                //todo: 上报
             }
 
             /**
