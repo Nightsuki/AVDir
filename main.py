@@ -46,7 +46,7 @@ setting = {
     "thread_pool": futures.ThreadPoolExecutor(4)
 }
 
-if os.environ.get("KOUSHAO_ENV") == 'prod':
+if os.environ.get("AVDIR_ENV") == 'prod':
     config_env = "prod"
 else:
     config_env = "dev"
@@ -92,7 +92,6 @@ if __name__ == "__main__":
         tornado.ioloop.IOLoop.instance().start()
     except:
         import traceback
-
         print traceback.print_exc()
     finally:
         sys.exit(0)
