@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN" >
 <head>
     <meta charset="UTF-8">
     <title>{% block first_title %}{% end %} - {{ title }}</title>
@@ -13,6 +13,7 @@
     <script src="/static/js/jquery.pjax.js"></script>
     <script src="/static/js/material-scrolltop.js"></script>
     <script src="/static/js/material-progress.js"></script>
+    <script src="/static/js/main.js"></script>
     {% block head %}{% end %}
 </head>
 
@@ -55,31 +56,4 @@
 </div>
 <button class="material-scrolltop" type="button"></button>
 </body>
-<script>
-
-    $('.pjax').click(function() {
-        $('body').animate({
-            scrollTop: 0
-        })
-    });
-
-    $(document).ready(function() {
-        $('body').materialScrollTop({
-            revealElement: 'header',
-            revealPosition: 'bottom'
-        });
-    });
-
-    $(document).on('pjax:start', function() {
-        $('.mdl-progress').show();
-    });
-
-    $(document).on('pjax:end', function() {
-        $('.mdl-progress').hide();
-    });
-
-    // Pjax
-    $(document).pjax('.pjax', '.container');
-
-</script>
 </html>
