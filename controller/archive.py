@@ -4,6 +4,7 @@ from controller.base import BaseHandler, NotFoundHandler
 from tornado import gen
 from database import *
 from itertools import groupby
+from util.function import humantime
 
 
 class ArchiveHandler(BaseHandler):
