@@ -1,6 +1,6 @@
 # coding=utf-8
 import tornado.web
-from util.function import humantime, humansize, time_span, markdown
+from util.function import humantime, json, time_span, markdown
 
 
 class BaseHandler(tornado.web.RequestHandler):
@@ -15,12 +15,17 @@ class BaseHandler(tornado.web.RequestHandler):
     def set_user(self, user):
         if not user:
             return None
-        else:
-            try:
-                user = self.set_secure_cookie("_user", user)
-                return user
-            except:
-                return None
+        try:
+            user = {
+                "id": user.id,
+                "role": user.role,
+                "username": user.username,
+                "nickname": user.nickname
+            }
+            user = json.dumps(user)
+            self.set_secure_cookie("_user", user, httponly=True, secure=True)
+        except:
+            return None
 
     def get_current_user(self):
         try:
@@ -32,7 +37,6 @@ class BaseHandler(tornado.web.RequestHandler):
 
     def render(self, template_name, **kwargs):
         kwargs["humantime"] = humantime
-        kwargs["humansize"] = humansize
         kwargs["time_span"] = time_span
         kwargs["markdown"] = markdown
         kwargs["is_pjax"] = True if self.request.headers.get('X-Pjax', None) else False

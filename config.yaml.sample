@@ -20,22 +20,4 @@
       "user": "user"
       "password": "123456"
       "dbname": "avdir"
-"session":
-  "dev":
-    "db": !!int "10"
-    "host": "localhost"
-    "port": !!int "6379"
-  "prod":
-    "db": !!int "10"
-    "host": "localhost"
-    "port": !!int "6379"
-"cache":
-  "dev":
-    "db": !!int "9"
-    "host": "localhost"
-    "port": !!int "6379"
-  "prod":
-    "db": !!int "9"
-    "host": "localhost"
-    "port": !!int "6379"
 

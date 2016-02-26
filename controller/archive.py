@@ -8,9 +8,6 @@ from util.function import humantime
 
 
 class ArchiveHandler(BaseHandler):
-    def initialize(self):
-        BaseHandler.initialize(self)
-
     @tornado.web.asynchronous
     @gen.coroutine
     def get(self, *args, **kwargs):
@@ -23,9 +20,6 @@ class ArchiveHandler(BaseHandler):
 
 
 class PageHandler(BaseHandler):
-    def initialize(self):
-        BaseHandler.initialize(self)
-
     @tornado.web.asynchronous
     @gen.coroutine
     def get(self, *args, **kwargs):
@@ -38,9 +32,6 @@ class PageHandler(BaseHandler):
 
 
 class ArchiveLineHandler(BaseHandler):
-    def initialize(self):
-        BaseHandler.initialize(self)
-
     @tornado.web.asynchronous
     @gen.coroutine
     def get(self, *args, **kwargs):

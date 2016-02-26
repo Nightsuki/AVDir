@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
-import os, string, random, hashlib, time, re, datetime
+import string, random, time, re, datetime
 from tornado.httpclient import AsyncHTTPClient
 from tornado import gen
 import json
@@ -17,54 +17,43 @@ def shorturl(url):
     raise gen.Return(short_url)
 
 
-def md5(str):
-    '''
-    计算简单的md5 hex格式字符串
-
-    :param str: 原字符串
-    :return: 返回的32尾hex字符串
-    '''
-    m = hashlib.md5()
-    m.update(str)
-    return m.hexdigest()
-
-
 def markdown(text):
     markdown = mistune.Markdown(escape=True, hard_wrap=True)
     return markdown(text)
 
 
-def ajax_need_login(func):
-    '''
-    修饰器，修饰prepare方法，需要登录才可使用。
+def ajax_check_role(request_role):
+    def do_check(role_array):
+        def check(func):
+            def do_function(self, *args, **kwargs):
+                if self.get_current_user() > 0:
+                    user = self.get_current_user()
+                    if user["role"] in role_array:
+                        return func(self, *args, **kwargs)
+                    else:
+                        return self._json("deny", "无权使用!")
+                else:
+                    return self._json("deny", "无权使用!")
+            return do_function
+        return check
+    return do_check(request_role)
 
-    :param func: prepare方法
-    :return: 处理过的prepare方法
-    '''
 
-    def do_prepare(self, *args, **kwargs):
-        user = self.get_current_user()
-        if not user:
-            self._json(-1, "请登录后使用")
-        return func(self, *args, **kwargs)
-    return do_prepare
-
-
-def need_login(func):
-    '''
-    修饰器，修饰prepare方法，需要登录才可使用。
-
-    :param func: prepare方法
-    :return: 处理过的prepare方法
-    '''
-
-    def do_prepare(self, *args, **kwargs):
-        user = self.get_current_user()
-        if not user:
-            self.write('''<script language="javascript">alert("请登录后使用");window.history.back(-1);</script>''')
-            return self.finish()
-        return func(self, *args, **kwargs)
-    return do_prepare
+def check_role(request_role):
+    def do_check(role_array):
+        def check(func):
+            def do_function(self, *args, **kwargs):
+                if self.get_current_user() > 0:
+                    user = self.get_current_user()
+                    if user["role"] in role_array:
+                        return func(self, *args, **kwargs)
+                    else:
+                        return self.redirect("/login")
+                else:
+                    return self.redirect("/login")
+            return do_function
+        return check
+    return do_check(request_role)
 
 
 def intval(str):
@@ -81,27 +70,6 @@ def intval(str):
     except:
         ret = 0
     return ret
-
-
-def humansize(file):
-    '''
-    计算文件大小并输出为可读的格式（如 1.3MB）
-
-    :param file: 文件路径
-    :return: 可读的文件大小
-    '''
-    if os.path.exists(file):
-        nbytes = os.path.getsize(file)
-        suffixes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
-        if nbytes == 0: return '0 B'
-        i = 0
-        while nbytes >= 1024 and i < len(suffixes) - 1:
-            nbytes /= 1024.
-            i += 1
-        f = ('%.2f' % nbytes).rstrip('0').rstrip('.')
-        return '%s %s' % (f, suffixes[i])
-    else:
-        return u"未知"
 
 
 def humantime(t=None, format="%Y年%m月%d日 %H:%M", span=False):

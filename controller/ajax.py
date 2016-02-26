@@ -2,7 +2,7 @@
 import tornado.web
 from tornado import gen
 from controller.base import BaseHandler
-from util.function import ajax_need_login
+from util.function import ajax_check_role
 from database import *
 
 

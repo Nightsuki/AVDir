@@ -8,9 +8,6 @@ from itertools import groupby
 
 
 class MainHandler(BaseHandler):
-    def initialize(self):
-        BaseHandler.initialize(self)
-
     @tornado.web.asynchronous
     @gen.coroutine
     def get(self, *args, **kwargs):
@@ -22,9 +19,6 @@ class MainHandler(BaseHandler):
 
 
 class PageHandler(BaseHandler):
-    def initialize(self):
-        BaseHandler.initialize(self)
-
     @tornado.web.asynchronous
     @gen.coroutine
     def get(self, *args, **kwargs):
@@ -38,9 +32,6 @@ class PageHandler(BaseHandler):
 
 
 class TagHandler(BaseHandler):
-    def initialize(self):
-        BaseHandler.initialize(self)
-
     @tornado.web.asynchronous
     @gen.coroutine
     def get(self, *args, **kwargs):
@@ -54,9 +45,6 @@ class TagHandler(BaseHandler):
 
 
 class FeedHandler(BaseHandler):
-    def initialize(self):
-        BaseHandler.initialize(self)
-
     @tornado.web.asynchronous
     @gen.coroutine
     def get(self, *args, **kwargs):
