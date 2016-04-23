@@ -40,12 +40,12 @@ class TagHandler(BaseHandler):
         if tag_query:
             archives2tag_query = Archive2Tag.select(Archive2Tag.archive_id).where(Archive2Tag.tag_id == tag_query.id)
             archive_ids = [one.archive_id for one in archives2tag_query]
-        archives = Archive.select().where(
-            (Archive.id << archive_ids) & (Archive.status == 1) & (Archive.type == "archive")).order_by(
-            Archive.published_time.desc())
-        archives_groups = [{'year': year, 'archives': list(archives)}
-                           for year, archives in groupby(archives, key=lambda a: humantime(a.published_time, "%Y"))]
-        self.render("timeline.html", archives_groups=archives_groups, first_title="Tag: %s" % tag)
+            archives = Archive.select().where(
+                (Archive.id << archive_ids) & (Archive.status == 1) & (Archive.type == "archive")).order_by(
+                Archive.published_time.desc())
+            archives_groups = [{'year': year, 'archives': list(archives)}
+                               for year, archives in groupby(archives, key=lambda a: humantime(a.published_time, "%Y"))]
+            self.render("timeline.html", archives_groups=archives_groups, first_title="Tag: %s" % tag)
 
 
 class FeedHandler(BaseHandler):
