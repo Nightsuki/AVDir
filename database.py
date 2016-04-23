@@ -90,6 +90,13 @@ class User(BaseModel):
     def __init__(self, *args, **kwargs):
         super(BaseModel, self).__init__(*args, **kwargs)
 
+    @property
+    def role(self):
+        if self.role == 0:
+            return "User"
+        if self.role == 1:
+            return "Admin"
+
     def set_password(self, password):
         self.password = generate_password_hash(password, method="pbkdf2:sha256")
 

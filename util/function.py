@@ -48,9 +48,9 @@ def check_role(request_role):
                     if user["role"] in role_array:
                         return func(self, *args, **kwargs)
                     else:
-                        return self.redirect("/login")
+                        return self.redirect("/admin/login")
                 else:
-                    return self.redirect("/login")
+                    return self.redirect("/admin/login")
             return do_function
         return check
     return do_check(request_role)
