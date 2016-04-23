@@ -2,7 +2,7 @@
 import tornado.web
 from controller.base import BaseHandler
 from tornado import gen
-from database import *
+from database import Tag, Archive2Tag, Archive
 from util.function import humantime
 from itertools import groupby
 
@@ -36,8 +36,12 @@ class TagHandler(BaseHandler):
     @gen.coroutine
     def get(self, *args, **kwargs):
         tag = args[0]
+        tag_query = Tag.select().where(Tag.content == tag).first()
+        if tag_query:
+            archives2tag_query = Archive2Tag.select(Archive2Tag.archive_id).where(Archive2Tag.tag_id == tag_query.id)
+            archive_ids = [one.archive_id for one in archives2tag_query]
         archives = Archive.select().where(
-            (Archive.tags.contains(tag)) & (Archive.status == 1) & (Archive.type == "archive")).order_by(
+            (Archive.id << archive_ids) & (Archive.status == 1) & (Archive.type == "archive")).order_by(
             Archive.published_time.desc())
         archives_groups = [{'year': year, 'archives': list(archives)}
                            for year, archives in groupby(archives, key=lambda a: humantime(a.published_time, "%Y"))]

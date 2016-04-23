@@ -150,8 +150,8 @@ class Archive(BaseModel):
     def get_tags(self):
         query = Archive2Tag.select(Archive2Tag.tag_id).where(Archive2Tag.archive_id == self.id)
         tag_ids = [one.tag_id for one in query]
-        tag_query = Tag.select(Tag.title).where(Tag.id << tag_ids)
-        return [one.title for one in tag_query]
+        tag_query = Tag.select(Tag.content).where(Tag.id << tag_ids)
+        return [one.content for one in tag_query]
 
     def __repr__(self):
         return '<Archive({title!r})>'.format(title=self.title)
