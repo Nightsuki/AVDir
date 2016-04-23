@@ -128,7 +128,7 @@ class Tag(BaseModel):
         super(BaseModel, self).__init__(*args, **kwargs)
 
     def __repr__(self):
-        return '<Tag({title!r})>'.format(title=self.title)
+        return '<Tag({content!r})>'.format(title=self.content)
 
 
 class Archive(BaseModel):
