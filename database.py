@@ -104,6 +104,33 @@ class User(BaseModel):
         return '<User({username!r})>'.format(username=self.username)
 
 
+class Archive2Tag(BaseModel):
+    class Meta:
+        db_table = 'archives_tags'
+
+    archive_id = IntegerField(default=0, null=False)
+    tag_id = IntegerField(default=0, null=False)
+
+    def __init__(self, *args, **kwargs):
+        super(Archive2Tag, self).__init__(*args, **kwargs)
+
+    def __repr__(self):
+        return '<Archive2Tag({id!r})>'.format(title=self.id)
+
+
+class Tag(BaseModel):
+    class Meta:
+        db_table = 'tags'
+
+    content = CharField(null=False, default="")
+
+    def __init__(self, *args, **kwargs):
+        super(BaseModel, self).__init__(*args, **kwargs)
+
+    def __repr__(self):
+        return '<Tag({title!r})>'.format(title=self.title)
+
+
 class Archive(BaseModel):
     class Meta:
         db_table = 'archives'
@@ -113,7 +140,6 @@ class Archive(BaseModel):
     content = TextField(null=False, default="")
     type = CharField(null=False, default="")
     user = ForeignKeyField(User)
-    tags = CharField(null=False, default="[]")
     status = IntegerField(null=False, default=0)  # 0未发布 1已发布
     modified_time = IntegerField(null=False, default=0)
     published_time = IntegerField(null=False, default=0)
@@ -122,11 +148,13 @@ class Archive(BaseModel):
         super(BaseModel, self).__init__(*args, **kwargs)
 
     def get_tags(self):
-        tags = json.loads(self.tags)
-        return tags
+        query = Archive2Tag.select(Archive2Tag.tag_id).where(Archive2Tag.archive_id == self.id)
+        tag_ids = [one.tag_id for one in query]
+        tag_query = Tag.select(Tag.title).where(Tag.id << tag_ids)
+        return [one.title for one in tag_query]
 
     def __repr__(self):
         return '<Archive({title!r})>'.format(title=self.title)
 
 
-db.create_tables([Config, User, Archive], safe=True)
+db.create_tables([Config, User, Archive, Tag, Archive2Tag], safe=True)
