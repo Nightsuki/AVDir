@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}{% end %} - 后台管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <link rel="icon" href="/favicon.png">
+    <link rel="stylesheet" href="{{ static_url('css/jquery.fancybox.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ static_url('css/material.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ static_url('css/style.css') }}" type="text/css">
+
+</head>
+<body>
+<div id="container-fluid">
+    {% block body %}{% end %}
+</div>
+</body>
+</html>
