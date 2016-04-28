@@ -98,7 +98,6 @@ class User(BaseModel):
     def set_last(self, ip):
         self.last_ip = ip
         self.last_time = int(time.time())
-        self.role = 1
         self.save()
 
     def check_password(self, value):

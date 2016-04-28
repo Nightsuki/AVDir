@@ -26,7 +26,7 @@ class BaseHandler(tornado.web.RequestHandler):
                 "nickname": user.nickname
             }
             user = json.dumps(user)
-            self.set_secure_cookie("_user", user, httponly=True, secure=True)
+            self.set_secure_cookie("_user", user, httponly=True)
         except:
             return None
 
@@ -49,6 +49,7 @@ class BaseHandler(tornado.web.RequestHandler):
         try:
             user = self.get_secure_cookie("_user")
             assert user
+            user = json.loads(user.decode('utf-8'))
         except:
             user = None
         return user
