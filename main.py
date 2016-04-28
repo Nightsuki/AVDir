@@ -38,9 +38,9 @@ try:
                                           "theme/%s/static" % config["site"]["theme"])
     setting["template_path"] = os.path.join(os.path.abspath(os.path.dirname(__file__)),
                                             "theme/%s/templates" % config["site"]["theme"])
-except Exception, e:
+except Exception as e:
     print(e)
-    print "cannot found config.yaml file"
+    print("cannot found config.yaml file")
     sys.exit(0)
 
 application = tornado.web.Application([
@@ -70,6 +70,7 @@ if __name__ == "__main__":
         tornado.ioloop.IOLoop.instance().start()
     except:
         import traceback
-        print traceback.print_exc()
+
+        print(traceback.print_exc())
     finally:
         sys.exit(0)

@@ -8,10 +8,6 @@ import yaml
 import os
 import json
 
-try:
-    type(u"a") is unicode
-except:
-    unicode = str
 
 if os.environ.get("AVDIR_ENV") == 'prod':
     config_env = "prod"
@@ -25,7 +21,7 @@ try:
     with open(os.path.join(os.path.abspath(os.path.dirname(__file__)), config_filename), "r") as fin:
         config = yaml.load(fin)
 except:
-    print "cannot found config.yaml file"
+    print("cannot found config.yaml file")
     sys.exit(0)
 
 
@@ -41,7 +37,7 @@ try:
                  password=config["database"][config_env]["password"],
                  autocommit=True, autorollback=True)
 except:
-    print "cannot connect Mysql, check the config.yaml"
+    print("cannot connect Mysql, check the config.yaml")
     sys.exit(0)
 
 print("Connected to DB.")

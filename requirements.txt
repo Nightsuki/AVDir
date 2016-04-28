@@ -2,7 +2,7 @@ tornado
 redis
 pyyaml
 futures
-wsgiref
+pymysql
 peewee
 werkzeug
 gevent

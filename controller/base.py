@@ -4,13 +4,16 @@ from util.function import humantime, json, time_span, markdown
 
 
 class BaseHandler(tornado.web.RequestHandler):
-    def initialize(self):
+    def __init__(self, application, request, **kwargs):
+        super(BaseHandler, self).__init__(application, request, **kwargs)
         self.site = self.settings.get("site")
+        self.is_pjax = False
 
     def prepare(self):
         self.set_header("X-XSS-Protection", "1; mode=block")
         self.set_header("X-UA-Compatible", "IE=edge,chrome=1")
         self.set_header("X-Powered-by", "AVDir")
+        self.is_pjax = True if self.request.headers.get('X-Pjax', None) else False
 
     def set_user(self, user):
         if not user:
@@ -39,7 +42,6 @@ class BaseHandler(tornado.web.RequestHandler):
         kwargs["humantime"] = humantime
         kwargs["time_span"] = time_span
         kwargs["markdown"] = markdown
-        kwargs["is_pjax"] = True if self.request.headers.get('X-Pjax', None) else False
         for one in self.site:
             if one not in kwargs:
                 kwargs[one] = self.site[one]
