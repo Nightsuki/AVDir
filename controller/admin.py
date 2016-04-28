@@ -8,12 +8,8 @@ from database import User, Archive
 
 
 class AdminBaseHandler(BaseHandler):
-    def initialize(self):
-        self.settings["static_path"] = os.path.join(os.path.abspath(os.path.dirname(__file__)), "theme/admin/static")
-        BaseHandler.initialize(self)
-
     def get_template_path(self):
-        return os.path.join(os.path.abspath(os.path.dirname(__file__)), "theme/admin/templates")
+        return os.path.join(os.path.abspath(os.path.dirname(__file__)), "../theme/admin/templates")
 
 
 class LoginHandler(AdminBaseHandler):
@@ -28,7 +24,7 @@ class IndexHandler(AdminBaseHandler):
     @gen.coroutine
     @check_role(["User", "Admin"])
     def get(self, *args, **kwargs):
-        self.render("login.html")
+        self.render("index.html")
         
 
 class ArchiveHandler(AdminBaseHandler):

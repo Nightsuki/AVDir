@@ -17,11 +17,9 @@ class AjaxHandler(BaseHandler):
         else:
             self._json(0, "No way here!")
 
-    def _json(self, code, result=""):
-        if type(result) == str:
-            result = result.decode("utf8")
+    def _json(self, status, result=""):
         data = {
-            "code": code,
+            "status": status,
             "result": result
         }
         self.write(data)
@@ -30,11 +28,12 @@ class AjaxHandler(BaseHandler):
     @tornado.web.asynchronous
     @gen.coroutine
     def _login_action(self):
-        username = self.get_body_argument("username", default=None)
-        password = self.get_body_argument("password", default=None)
+        username = self.get_json_argument("username", default=None)
+        password = self.get_json_argument("password", default=None)
         if username and password:
             user = User.select().where(User.username == username).first()
             if user and user.check_password(password):
+                user.set_last(self.get_ip())
                 self.set_user(user)
                 self._json("success")
             else:

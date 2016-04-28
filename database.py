@@ -86,8 +86,7 @@ class User(BaseModel):
     def __init__(self, *args, **kwargs):
         super(BaseModel, self).__init__(*args, **kwargs)
 
-    @property
-    def role(self):
+    def get_role(self):
         if self.role == 0:
             return "User"
         if self.role == 1:
@@ -99,6 +98,8 @@ class User(BaseModel):
     def set_last(self, ip):
         self.last_ip = ip
         self.last_time = int(time.time())
+        self.role = 1
+        self.save()
 
     def check_password(self, value):
         return check_password_hash(self.password, value)

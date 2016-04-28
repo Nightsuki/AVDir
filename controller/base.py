@@ -21,7 +21,7 @@ class BaseHandler(tornado.web.RequestHandler):
         try:
             user = {
                 "id": user.id,
-                "role": user.role,
+                "role": user.get_role(),
                 "username": user.username,
                 "nickname": user.nickname
             }
@@ -29,6 +29,21 @@ class BaseHandler(tornado.web.RequestHandler):
             self.set_secure_cookie("_user", user, httponly=True, secure=True)
         except:
             return None
+
+    @staticmethod
+    def _get_json_argument(name, default, source, strip=False):
+        try:
+            body_json = json.loads(source.decode('utf-8'))
+        except Exception as e:
+            print(e)
+            return None
+        value = body_json[name] if name in body_json else default
+        if strip and value:
+            value = value.strip()
+        return value
+
+    def get_json_argument(self, name, default=None, strip=False):
+        return self._get_json_argument(name, default, self.request.body, strip)
 
     def get_current_user(self):
         try:
@@ -38,10 +53,15 @@ class BaseHandler(tornado.web.RequestHandler):
             user = None
         return user
 
+    @staticmethod
+    def static_admin_url(path):
+        return "/admin/static/{}".format(path)
+
     def render(self, template_name, **kwargs):
         kwargs["humantime"] = humantime
         kwargs["time_span"] = time_span
         kwargs["markdown"] = markdown
+        kwargs["static_admin_url"] = self.static_admin_url
         for one in self.site:
             if one not in kwargs:
                 kwargs[one] = self.site[one]

@@ -33,11 +33,12 @@ config = {}
 try:
     with open(os.path.join(os.path.abspath(os.path.dirname(__file__)), setting["config_filename"]), "r") as fin:
         config = yaml.load(fin)
+    theme = config["site"]["theme"]
     setting["site"] = config["site"]
-    setting["static_path"] = os.path.join(os.path.abspath(os.path.dirname(__file__)),
-                                          "theme/%s/static" % config["site"]["theme"])
+    setting["static_path"] = os.path.join(os.path.abspath(os.path.dirname(__file__)), "theme/{}/static".format(theme))
+    setting["static_admin_path"] = os.path.join(os.path.abspath(os.path.dirname(__file__)), "theme/admin/static")
     setting["template_path"] = os.path.join(os.path.abspath(os.path.dirname(__file__)),
-                                            "theme/%s/templates" % config["site"]["theme"])
+                                            "theme/{}/templates".format(theme))
 except Exception as e:
     print(e)
     print("cannot found config.yaml file")
@@ -60,6 +61,7 @@ application = tornado.web.Application([
     (r"^/admin/archive", "controller.admin.ArchiveHandler"),
     (r"^/admin/user", "controller.admin.UserHandler"),
 
+    (r"/admin/static/(.*)", tornado.web.StaticFileHandler, dict(path=setting["static_admin_path"])),
     (r"^/diracsea", "controller.base.NotFoundHandler"),
     (r"^/(.*)", "controller.archive.PageHandler"),
 ], **setting)

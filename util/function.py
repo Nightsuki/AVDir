@@ -43,7 +43,7 @@ def check_role(request_role):
     def do_check(role_array):
         def check(func):
             def do_function(self, *args, **kwargs):
-                if self.get_current_user() > 0:
+                if self.get_current_user():
                     user = self.get_current_user()
                     if user["role"] in role_array:
                         return func(self, *args, **kwargs)
