@@ -66,4 +66,41 @@ class AjaxHandler(BaseHandler):
                 if self.current_user["id"] == archive_query.user.id or self.current_user["role"] == "Admin":
                     archive_query.delete_instance()
                     self._json("success")
-        self._json("fail", "无权访问的文章")
+        self._json("fail", "错误的姿势")
+
+    @tornado.web.asynchronous
+    @gen.coroutine
+    @ajax_check_role(["User", "Admin"])
+    def _user_action(self):
+        action = self.get_json_argument("action", default=None)
+        user_id = self.get_json_argument("user_id", default=None)
+        nickname = self.get_json_argument("nickname", default="默认用户")
+        password = self.get_json_argument("password", default="")
+        email = self.get_json_argument("email", default="")
+        role = self.get_json_argument("role", default=0)
+        if action == "create":
+            if self.current_user["role"] == "Admin" and (nickname and password and email):
+                user_query = User()
+                user_query.nickname = nickname
+                user_query.set_password(password)
+                user_query.email = email
+                user_query.role = role
+                user_query.save()
+                self._json("success")
+        if action == "edit":
+            user_query = User.select().where(User.id == user_id).first()
+            if user_id and user_query:
+                if self.current_user["id"] == user_query.id or self.current_user["role"] == "Admin":
+                    if nickname: user_query.nickname = nickname
+                    if password: user_query.set_password(password)
+                    if email: user_query.email = email
+                    if role and self.current_user["role"] == "Admin": user_query.role = role
+                    user_query.save()
+                    self._json("success")
+        if action == "del":
+            user_query = User.select().where(User.id == user_id).first()
+            if user_id and user_query:
+                if self.current_user["role"] == "Admin":
+                    user_query.delete_instance()
+                    self._json("success")
+        self._json("fail", "错误的姿势")
