@@ -15,7 +15,7 @@ class AjaxHandler(BaseHandler):
         if hasattr(self, action):
             getattr(self, action)()
         else:
-            self._json(0, "No way here!")
+            self._json("fail", "404")
 
     def _json(self, status, result=""):
         data = {
