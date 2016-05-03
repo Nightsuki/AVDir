@@ -70,7 +70,8 @@ if __name__ == "__main__":
     try:
         application.listen(tornado.options.options.port)
         tornado.ioloop.IOLoop.instance().start()
-    except:
+    except Exception as e:
+        print(e)
         import traceback
 
         print(traceback.print_exc())

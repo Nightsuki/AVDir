@@ -39,3 +39,31 @@ class AjaxHandler(BaseHandler):
             else:
                 self._json("fail", "账号或密码错误")
         self._json("fail", "请填写账号和密码")
+
+    @tornado.web.asynchronous
+    @gen.coroutine
+    @ajax_check_role(["User", "Admin"])
+    def _archive_action(self):
+        action = self.get_json_argument("action", default=None)
+        archive_id = self.get_json_argument("archive_id", default=None)
+        title = self.get_json_argument("title", default="")
+        content = self.get_json_argument("content", default="")
+        slug = self.get_json_argument("slug", default="")
+        type = self.get_json_argument("type", default=0)
+        if action == "edit":
+            archive_query = Archive.select().where(Archive.id == archive_id).first()
+            if archive_id and archive_query:
+                if self.current_user["id"] == archive_query.user.id or self.current_user["role"] == "Admin":
+                    archive_query.title = title
+                    archive_query.content = content
+                    archive_query.slug = slug
+                    archive_query.type = type
+                    archive_query.save()
+                    self._json("success")
+        if action == "del":
+            archive_query = Archive.select().where(Archive.id == archive_id).first()
+            if archive_id and archive_query:
+                if self.current_user["id"] == archive_query.user.id or self.current_user["role"] == "Admin":
+                    archive_query.delete_instance()
+                    self._json("success")
+        self._json("fail", "无权访问的文章")

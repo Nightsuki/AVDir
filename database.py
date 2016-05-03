@@ -141,7 +141,7 @@ class Archive(BaseModel):
     title = CharField(null=False, default="")
     slug = CharField(null=False, default="")
     content = TextField(null=False, default="")
-    type = CharField(null=False, default="")
+    type = CharField(null=False, default="")  # 0文章  1单页
     user = ForeignKeyField(User)
     status = IntegerField(null=False, default=0)  # 0未发布 1已发布
     modified_time = IntegerField(null=False, default=0)
