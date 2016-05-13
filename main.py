@@ -31,7 +31,7 @@ print(config_env)
 
 config = {}
 try:
-    with open(os.path.join(os.path.abspath(os.path.dirname(__file__)), setting["config_filename"]), "r") as fin:
+    with open(os.path.join(os.path.abspath(os.path.dirname(__file__)), setting["config_filename"]), "r", encoding="utf-8") as fin:
         config = yaml.load(fin)
     theme = config["site"]["theme"]
     setting["site"] = config["site"]

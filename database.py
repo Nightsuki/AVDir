@@ -18,7 +18,7 @@ config_filename = "config.yaml"
 config = {}
 
 try:
-    with open(os.path.join(os.path.abspath(os.path.dirname(__file__)), config_filename), "r") as fin:
+    with open(os.path.join(os.path.abspath(os.path.dirname(__file__)), config_filename), "r", encoding="utf-8") as fin:
         config = yaml.load(fin)
 except:
     print("cannot found config.yaml file")
