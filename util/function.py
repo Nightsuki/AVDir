@@ -54,7 +54,7 @@ def check_role(roles=list):
             user = self.get_current_user()
             if _check_role(user, roles):
                 return func(self, *args, **kwargs)
-            return self.redirect("/login")
+            return self.redirect("/admin/login")
 
         return do_function
 
