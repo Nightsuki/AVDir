@@ -86,6 +86,7 @@ class User(BaseModel):
     def __init__(self, *args, **kwargs):
         super(BaseModel, self).__init__(*args, **kwargs)
 
+    @property
     def get_role(self):
         if self.role == 0:
             return "User"

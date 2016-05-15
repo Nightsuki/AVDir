@@ -31,7 +31,7 @@ class AjaxHandler(BaseHandler):
         username = self.get_json_argument("username", default=None)
         password = self.get_json_argument("password", default=None)
         if username and password:
-            user = User.select().where(User.username == username).first()
+            user = User.select().where(User.username == username.lower()).first()
             if user and user.check_password(password):
                 user.set_last(self.get_ip())
                 self.set_user(user)

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="col-md-offset-2 col-md-8">
+    <div class="page-header">
+        <h1>用户列表</h1>
+    </div>
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <!--<th>选择</th>-->
+            <th>编辑</th>
+            <th>序号</th>
+            <th>角色</th>
+            <th>用户名</th>
+            <th>昵称</th>
+            <th>手机号</th>
+            <th>最后登录IP</th>
+            <th>最后登录时间</th>
+            <th>注册时间</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for one in user_list %}
+        <tr>
+            <!--<th>-->
+            <!--<label class="checkbox inline">-->
+            <!--<input type="checkbox" value="{{ one.id }}">-->
+            <!--</label>-->
+            <!--</th>-->
+            <th>
+                <div class="control-group">
+                    <div class="controls">
+                        <a class="btn btn-success book-edit" href="/admin/user_edit/{{ one.id }}">编辑</a>
+                    </div>
+                </div>
+            </th>
+            <th>{{ one.id }}</th>
+            <th>{{ one.get_role }}</th>
+            <th>{{ one.username }}</th>
+            <th>{{ one.nickname }}</th>
+            <th>{{ one.mobilePhone }}</th>
+            <th>{{ one.last_ip }}</th>
+            <th>{{ humantime(one.last_time)}}</th>
+            <th>{{ humantime(one.created_time) }}</th>
+        </tr>
+        {% end %}
+        </tbody>
+    </table>
+</div>
+
+{% end %}

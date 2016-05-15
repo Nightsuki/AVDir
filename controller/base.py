@@ -21,7 +21,7 @@ class BaseHandler(tornado.web.RequestHandler):
         try:
             user = {
                 "id": user.id,
-                "role": user.get_role(),
+                "role": user.get_role,
                 "username": user.username,
                 "nickname": user.nickname
             }

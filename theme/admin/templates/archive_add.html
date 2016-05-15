@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="form-horizontal col-md-offset-2 col-md-8">
+    <div class="page-header">
+        <h1>添加用户</h1>
+    </div>
+    <input value="" id="user_id" style="display: none">
+    <div class="form-group">
+        <label for="nickname" class="col-sm-2 control-label">昵称</label>
+        <div class="col-sm-3">
+            <input type="text" value="" placeholder="昵称" class="form-control" id="nickname">
+            </div>
+        </div>
+    <div class="form-group">
+        <label for="password" class="col-sm-2 control-label">密码</label>
+        <div class="col-sm-3">
+            <input type="text" value="" placeholder="密码" class="form-control" id="password">
+            </div>
+        </div>
+    <div class="form-group">
+        <label for="mobilePhone" class="col-sm-2 control-label">手机号</label>
+        <div class="col-sm-3">
+            <input type="text" value="" placeholder="手机号" class="form-control"
+                   id="mobilePhone">
+            </div>
+        </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">选择角色</label>
+        <div class="controls col-sm-3">
+            <select class="form-control" id="role">
+                <option value="0" selected>普通用户</option>
+                <option value="1">管理员</option>
+                <option value="-1">小黑屋</option>
+            </select>
+            </div>
+
+        </div>
+
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-3">
+            <button class="btn btn-success btn-lg btn-block" id="user-edit-submit">修改</button>
+            </div>
+        </div>
+</div>
+{% end %}

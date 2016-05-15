@@ -27,20 +27,28 @@ class IndexHandler(AdminBaseHandler):
         self.render("index.html")
         
 
-class ArchiveHandler(AdminBaseHandler):
+class ArchiveListHandler(AdminBaseHandler):
     @tornado.web.asynchronous
     @gen.coroutine
     @check_role(["User", "Admin"])
     def get(self, *args, **kwargs):
-        self.render("login.html")
+        self.render("archive_list.html")
 
 
-class UserHandler(AdminBaseHandler):
+class ArchiveAddHandler(AdminBaseHandler):
     @tornado.web.asynchronous
     @gen.coroutine
     @check_role(["User", "Admin"])
     def get(self, *args, **kwargs):
-        self.render("login.html")
+        self.render("archive_add.html")
+
+
+class ArchiveEditHandler(AdminBaseHandler):
+    @tornado.web.asynchronous
+    @gen.coroutine
+    @check_role(["User", "Admin"])
+    def get(self, *args, **kwargs):
+        self.render("archive_edit.html")
 
 
 

@@ -22,38 +22,43 @@ def markdown(text):
     return markdown(text)
 
 
-def ajax_check_role(request_role):
-    def do_check(role_array):
-        def check(func):
-            def do_function(self, *args, **kwargs):
-                if self.get_current_user() > 0:
-                    user = self.get_current_user()
-                    if user["role"] in role_array:
-                        return func(self, *args, **kwargs)
-                    else:
-                        return self._json("deny", "无权使用!")
-                else:
-                    return self._json("deny", "无权使用!")
-            return do_function
-        return check
-    return do_check(request_role)
+def _check_role(user, roles):
+    if not user:
+        return False
+    role = user["role"]
+    if isinstance(roles, list):
+        if role in roles:
+            return True
+    else:
+        if role == roles:
+            return True
+    return False
 
 
-def check_role(request_role):
-    def do_check(role_array):
-        def check(func):
-            def do_function(self, *args, **kwargs):
-                if self.get_current_user():
-                    user = self.get_current_user()
-                    if user["role"] in role_array:
-                        return func(self, *args, **kwargs)
-                    else:
-                        return self.redirect("/admin/login")
-                else:
-                    return self.redirect("/admin/login")
-            return do_function
-        return check
-    return do_check(request_role)
+def ajax_check_role(roles=list):
+    def check(func):
+        def do_function(self, *args, **kwargs):
+            user = self.get_current_user()
+            if _check_role(user, roles):
+                return func(self, *args, **kwargs)
+            return self._json("login", "无权使用!")
+
+        return do_function
+
+    return check
+
+
+def check_role(roles=list):
+    def check(func):
+        def do_function(self, *args, **kwargs):
+            user = self.get_current_user()
+            if _check_role(user, roles):
+                return func(self, *args, **kwargs)
+            return self.redirect("/login")
+
+        return do_function
+
+    return check
 
 
 def intval(str):

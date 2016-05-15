@@ -58,8 +58,9 @@ application = tornado.web.Application([
 
     (r"^/admin", "controller.admin.IndexHandler"),
     (r"^/admin/login", "controller.admin.LoginHandler"),
-    (r"^/admin/archive", "controller.admin.ArchiveHandler"),
-    (r"^/admin/user", "controller.admin.UserHandler"),
+    (r"^/admin/archive/add", "controller.admin.ArchiveAddHandler"),
+    (r"^/admin/archive/edit/([0-9]+)", "controller.admin.ArchiveEditHandler"),
+    (r"^/admin/archive/list", "controller.admin.ArchiveListHandler"),
 
     (r"/admin/static/(.*)", tornado.web.StaticFileHandler, dict(path=setting["static_admin_path"])),
     (r"^/diracsea", "controller.base.NotFoundHandler"),
