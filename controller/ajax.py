@@ -35,7 +35,7 @@ class AjaxHandler(BaseHandler):
             if user and user.check_password(password):
                 user.set_last(self.get_ip())
                 self.set_user(user)
-                self._json("success")
+                self._json("success", "登录成功")
             else:
                 self._json("fail", "账号或密码错误")
         self._json("fail", "请填写账号和密码")
@@ -53,7 +53,7 @@ class AjaxHandler(BaseHandler):
         if action == "add":
             if title and content and slug and type:
                 archive_query = Archive()
-                archive_query.user = self.current_user["id"]
+                archive_query.user_id = self.current_user["id"]
                 archive_query.title = title
                 archive_query.content = content
                 archive_query.slug = slug
@@ -80,7 +80,7 @@ class AjaxHandler(BaseHandler):
         if action == "del":
             archive_query = Archive.select().where(Archive.id == archive_id).first()
             if archive_id and archive_query:
-                if self.current_user["id"] == archive_query.user.id or self.current_user["role"] == "Admin":
+                if self.current_user["id"] == archive_query.author.id or self.current_user["role"] == "Admin":
                     archive_query.delete_instance()
                     self._json("success", "删除成功")
                 self._json("success", "无权操作")
@@ -93,19 +93,21 @@ class AjaxHandler(BaseHandler):
     def _user_action(self):
         action = self.get_json_argument("action", default=None)
         user_id = self.get_json_argument("user_id", default=None)
+        username = self.get_json_argument("username", default="")
         nickname = self.get_json_argument("nickname", default="默认用户")
         password = self.get_json_argument("password", default="")
         email = self.get_json_argument("email", default="")
         role = self.get_json_argument("role", default=0)
-        if action == "create":
-            if self.current_user["role"] == "Admin" and (nickname and password and email):
+        if action == "add":
+            if self.current_user["role"] == "Admin" and (username and nickname and password and email):
                 user_query = User()
+                user_query.username = username
                 user_query.nickname = nickname
                 user_query.set_password(password)
                 user_query.email = email
                 user_query.role = role
                 user_query.save()
-                self._json("success")
+                self._json("success", "创建成功")
         if action == "edit":
             user_query = User.select().where(User.id == user_id).first()
             if user_id and user_query:
@@ -115,11 +117,11 @@ class AjaxHandler(BaseHandler):
                     if email: user_query.email = email
                     if role and self.current_user["role"] == "Admin": user_query.role = role
                     user_query.save()
-                    self._json("success")
+                    self._json("success", "修改成功")
         if action == "del":
             user_query = User.select().where(User.id == user_id).first()
             if user_id and user_query:
                 if self.current_user["role"] == "Admin":
                     user_query.delete_instance()
-                    self._json("success")
-        self._json("fail", "错误的姿势")
+                    self._json("success", "删除成功")
+        self._json("fail", "姿势错误")

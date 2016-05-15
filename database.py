@@ -143,13 +143,18 @@ class Archive(BaseModel):
     slug = CharField(null=False, default="")
     content = TextField(null=False, default="")
     type = IntegerField(null=False, default=0)  # 0文章  1单页
-    user = ForeignKeyField(User)
+    user_id = IntegerField(null=False, default=0)
     status = IntegerField(null=False, default=0)  # 0未发布 1已发布
     modified_time = IntegerField(null=False, default=0)
     published_time = IntegerField(null=False, default=0)
 
     def __init__(self, *args, **kwargs):
         super(Archive, self).__init__(*args, **kwargs)
+
+    @property
+    def author(self):
+        user = User.select().where(User.id == self.user_id).first()
+        return user
 
     def get_tags(self):
         query = Archive2Tag.select(Archive2Tag.tag_id).where(Archive2Tag.archive_id == self.id)

@@ -33,6 +33,7 @@ $(document).ready(function () {
         var data = {
             action: "edit",
             user_id: $('#user_id').val(),
+            username: $('#nickname').val(),
             nickname: $('#nickname').val(),
             password: $('#password').val(),
             email: $('#email').val(),
@@ -64,6 +65,7 @@ $(document).ready(function () {
         var data = {
             action: "add",
             user_id: $('#user_id').val(),
+            username: $('#nickname').val(),
             nickname: $('#nickname').val(),
             password: $('#password').val(),
             email: $('#email').val(),
@@ -89,6 +91,7 @@ $(document).ready(function () {
             }
         });
     });
+
 
     $("#archive_add_submit").click(function (e) {
         e.preventDefault();
@@ -152,3 +155,55 @@ $(document).ready(function () {
         });
     });
 });
+
+function user_del(user_id) {
+    var data = {
+        action: "del",
+        user_id: user_id
+    };
+    $.ajax({
+        url: '/ajax/user',
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(data),
+        dataType: 'JSON',
+        success: function (r) {
+            if (r.status === "success") {
+                alert(r.result);
+                window.location.href = "/admin/user/list"
+            }
+            else if (r.status === 'fail') {
+                alert(r.result);
+            }
+        },
+        error: function (r) {
+            alert(r.info);
+        }
+    });
+}
+
+function archive_del(archive_id) {
+    var data = {
+        action: "del",
+        archive_id: archive_id
+    };
+    $.ajax({
+        url: '/ajax/archive',
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(data),
+        dataType: 'JSON',
+        success: function (r) {
+            if (r.status === "success") {
+                alert(r.result);
+                window.location.href = "/admin/archive/list"
+            }
+            else if (r.status === 'fail') {
+                alert(r.result);
+            }
+        },
+        error: function (r) {
+            alert(r.info);
+        }
+    });
+}

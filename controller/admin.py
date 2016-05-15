@@ -40,7 +40,7 @@ class ArchiveListHandler(AdminBaseHandler):
     @gen.coroutine
     @check_role(["User", "Admin"])
     def get(self, *args, **kwargs):
-        archive_list = Archive.select().order_by(Archive.id.desc())
+        archive_list = Archive.select().where(Archive.user_id == self.current_user["id"]).order_by(Archive.id.desc())
         self.render("archive_list.html", archive_list=archive_list)
 
 
@@ -66,7 +66,7 @@ class ArchiveEditHandler(AdminBaseHandler):
 class UserListHandler(AdminBaseHandler):
     @tornado.web.asynchronous
     @gen.coroutine
-    @check_role(["User", "Admin"])
+    @check_role(["Admin"])
     def get(self, *args, **kwargs):
         user_list = User.select().order_by(User.id.desc())
         self.render("user_list.html", user_list=user_list)
@@ -75,7 +75,7 @@ class UserListHandler(AdminBaseHandler):
 class UserAddHandler(AdminBaseHandler):
     @tornado.web.asynchronous
     @gen.coroutine
-    @check_role(["User", "Admin"])
+    @check_role(["Admin"])
     def get(self, *args, **kwargs):
         self.render("user_add.html")
 
@@ -83,7 +83,7 @@ class UserAddHandler(AdminBaseHandler):
 class UserEditHandler(AdminBaseHandler):
     @tornado.web.asynchronous
     @gen.coroutine
-    @check_role(["User", "Admin"])
+    @check_role(["Admin"])
     def get(self, *args, **kwargs):
         user = User.select().where(User.id == args).first()
         if user:
