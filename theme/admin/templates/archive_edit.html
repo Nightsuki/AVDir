@@ -1,46 +1,58 @@
 {% extends "base.html" %}
 
+{% block title %}编辑文章{% end %}
+
 {% block body %}
-<div class="form-horizontal col-md-offset-2 col-md-8">
-    <div class="page-header">
-        <h1>编辑用户</h1>
-    </div>
-    <input value="{{ user.id }}" id="user_id" style="display: none">
+<div class="form-horizontal col-md-12">
+    <input value="{{ archive.id }}" id="archive_id" style="display: none">
     <div class="form-group">
-        <label for="nickname" class="col-sm-offset-2 col-sm-2 control-label">昵称</label>
-        <div class="col-sm-4">
-            <input type="text" value="{{ user.nickname }}" placeholder="昵称" class="form-control" id="nickname">
+        <div class="col-md-12">
+            <label for="title" class="control-label">标题</label>
+            <input type="text" value="{{ archive.title }}" placeholder="标题" class="form-control" id="title">
         </div>
     </div>
     <div class="form-group">
-        <label for="password" class="col-sm-offset-2 col-sm-2 control-label">密码</label>
-        <div class="col-sm-4">
-            <input type="text" value="" placeholder="不修改则为空" class="form-control" id="password">
+        <div class="col-md-12">
+            <label for="slug" class="control-label">自定义连接</label>
+            <input type="text" value="{{ archive.slug }}" placeholder="自定义连接" class="form-control" id="slug">
         </div>
     </div>
     <div class="form-group">
-        <label for="mobilePhone" class="col-sm-offset-2 col-sm-2 control-label">手机号</label>
-        <div class="col-sm-4">
-            <input type="text" value="{{ user.mobilePhone }}" placeholder="手机号" class="form-control"
-                   id="mobilePhone">
+        <div class="col-md-12">
+            <label for="slug" class="control-label">文章</label>
+            <div id="content">
+                <textarea style="display:none;">{{ archive.content }}</textarea>
+            </div>
         </div>
     </div>
     <div class="form-group">
-        <label class="col-sm-offset-2 col-sm-2 control-label">选择角色</label>
-        <div class="controls col-sm-4">
-            <select class="form-control" id="role">
-                <option value="0" {% if user.role== 0 %}selected{% end %}>普通用户</option>
-                <option value="1" {% if user.role== 1 %}selected{% end %}>管理员</option>
-                <option value="-1" {% if user.role== -1 %}selected{% end %}>小黑屋</option>
+        <div class="col-md-12">
+            <label class="control-label">选择类型</label>
+            <select class="form-control" id="type">
+                <option value="0" {% if archive.type== 0 %}selected{% end %}>文章</option>
+                <option value="1" {% if archive.type== 1 %}selected{% end %}>单页</option>
             </select>
         </div>
-
     </div>
-
     <div class="form-group">
-        <div class="col-sm-offset-4 col-sm-4">
-            <button class="btn btn-success btn-lg btn-block" id="user_edit_submit">修改</button>
+        <div class="col-md-12">
+            <button class="btn btn-success btn-lg btn-block" id="archive_edit_submit">修改</button>
         </div>
     </div>
+    <link href="{{ static_admin_url('editor.md/css/editormd.css') }}" rel="stylesheet">
+    <script src="{{ static_admin_url('editor.md/editormd.min.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            var editor;
+            $(function () {
+                editor = editormd("content", {
+                    height: 500,
+                    path: "{{ static_admin_url('editor.md/lib/') }}"
+                });
+
+            });
+
+        })
+    </script>
 </div>
 {% end %}

@@ -60,7 +60,7 @@ class ArchiveEditHandler(AdminBaseHandler):
         archive_id = args
         archive = Archive.select().where(Archive.id == archive_id).first()
         if archive:
-            self.render("archive_edit.html")
+            self.render("archive_edit.html", archive=archive)
 
 
 class UserListHandler(AdminBaseHandler):
@@ -68,7 +68,8 @@ class UserListHandler(AdminBaseHandler):
     @gen.coroutine
     @check_role(["User", "Admin"])
     def get(self, *args, **kwargs):
-        self.render("user_list.html")
+        user_list = User.select().order_by(User.id.desc())
+        self.render("user_list.html", user_list=user_list)
 
 
 class UserAddHandler(AdminBaseHandler):

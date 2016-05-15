@@ -1,10 +1,9 @@
 {% extends "base.html" %}
 
+{% block title %}用户列表{% end %}
+
 {% block body %}
 <div class="col-md-offset-2 col-md-8">
-    <div class="page-header">
-        <h1>用户列表</h1>
-    </div>
     <table class="table table-bordered table-hover">
         <thead>
         <tr>
@@ -13,10 +12,9 @@
             <th>角色</th>
             <th>用户名</th>
             <th>昵称</th>
-            <th>手机号</th>
+            <th>邮箱</th>
             <th>最后登录IP</th>
             <th>最后登录时间</th>
-            <th>注册时间</th>
         </tr>
         </thead>
         <tbody>
@@ -34,10 +32,9 @@
             <th>{{ one.get_role }}</th>
             <th>{{ one.username }}</th>
             <th>{{ one.nickname }}</th>
-            <th>{{ one.mobilePhone }}</th>
+            <th>{{ one.email }}</th>
             <th>{{ one.last_ip }}</th>
             <th>{{ humantime(one.last_time)}}</th>
-            <th>{{ humantime(one.created_time) }}</th>
         </tr>
         {% end %}
         </tbody>
