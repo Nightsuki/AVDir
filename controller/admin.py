@@ -19,6 +19,14 @@ class LoginHandler(AdminBaseHandler):
         self.render("login.html")
 
 
+class LogoutHandler(BaseHandler):
+    @tornado.web.asynchronous
+    @gen.coroutine
+    def get(self, *args, **kwargs):
+        self.clear_cookie("_user")
+        self.redirect("/admin/login")
+
+
 class IndexHandler(AdminBaseHandler):
     @tornado.web.asynchronous
     @gen.coroutine
@@ -32,7 +40,8 @@ class ArchiveListHandler(AdminBaseHandler):
     @gen.coroutine
     @check_role(["User", "Admin"])
     def get(self, *args, **kwargs):
-        self.render("archive_list.html")
+        archive_list = Archive.select().order_by(Archive.id.desc())
+        self.render("archive_list.html", archive_list=archive_list)
 
 
 class ArchiveAddHandler(AdminBaseHandler):
@@ -48,7 +57,34 @@ class ArchiveEditHandler(AdminBaseHandler):
     @gen.coroutine
     @check_role(["User", "Admin"])
     def get(self, *args, **kwargs):
-        self.render("archive_edit.html")
+        archive_id = args
+        archive = Archive.select().where(Archive.id == archive_id).first()
+        if archive:
+            self.render("archive_edit.html")
+
+
+class UserListHandler(AdminBaseHandler):
+    @tornado.web.asynchronous
+    @gen.coroutine
+    @check_role(["User", "Admin"])
+    def get(self, *args, **kwargs):
+        self.render("user_list.html")
+
+
+class UserAddHandler(AdminBaseHandler):
+    @tornado.web.asynchronous
+    @gen.coroutine
+    @check_role(["User", "Admin"])
+    def get(self, *args, **kwargs):
+        self.render("user_add.html")
+
+
+class UserEditHandler(AdminBaseHandler):
+    @tornado.web.asynchronous
+    @gen.coroutine
+    @check_role(["User", "Admin"])
+    def get(self, *args, **kwargs):
+        self.render("user_edit.html")
 
 
 

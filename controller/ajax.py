@@ -28,8 +28,8 @@ class AjaxHandler(BaseHandler):
     @tornado.web.asynchronous
     @gen.coroutine
     def _login_action(self):
-        username = self.get_json_argument("username", default=None)
-        password = self.get_json_argument("password", default=None)
+        username = self.get_json_argument("username", default="", strip=True)
+        password = self.get_json_argument("password", default="", strip=True)
         if username and password:
             user = User.select().where(User.username == username.lower()).first()
             if user and user.check_password(password):

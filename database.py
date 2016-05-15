@@ -119,7 +119,7 @@ class Archive2Tag(BaseModel):
         super(Archive2Tag, self).__init__(*args, **kwargs)
 
     def __repr__(self):
-        return '<Archive2Tag({id!r})>'.format(title=self.id)
+        return '<Archive2Tag({}!r})>'.format(self.id)
 
 
 class Tag(BaseModel):
@@ -132,7 +132,7 @@ class Tag(BaseModel):
         super(BaseModel, self).__init__(*args, **kwargs)
 
     def __repr__(self):
-        return '<Tag({content!r})>'.format(title=self.content)
+        return '<Tag({}!r})>'.format(self.content)
 
 
 class Archive(BaseModel):
@@ -142,7 +142,7 @@ class Archive(BaseModel):
     title = CharField(null=False, default="")
     slug = CharField(null=False, default="")
     content = TextField(null=False, default="")
-    type = CharField(null=False, default="")  # 0文章  1单页
+    type = IntegerField(null=False, default=0)  # 0文章  1单页
     user = ForeignKeyField(User)
     status = IntegerField(null=False, default=0)  # 0未发布 1已发布
     modified_time = IntegerField(null=False, default=0)

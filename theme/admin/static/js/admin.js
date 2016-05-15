@@ -3,6 +3,31 @@
  */
 
 $(document).ready(function () {
+    $("#login").click(function (e) {
+        e.preventDefault();
+        var data = {
+            username: $('#username').val(),
+            password: $('#password').val()
+        };
+        $.ajax({
+            url: '/ajax/login',
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            dataType: 'JSON',
+            success: function (r) {
+                if (r.status === "success") {
+                    window.location.href = "/admin";
+                }
+                else if (r.status === 'fail') {
+                    alert(r.result);
+                }
+            },
+            error: function (r) {
+                alert(r.info);
+            }
+        });
+    });
     $("#user_edit_submit").click(function (e) {
         e.preventDefault();
         var data = {

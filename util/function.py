@@ -77,7 +77,7 @@ def intval(str):
     return ret
 
 
-def humantime(t=None, format="%Y年%m月%d日 %H:%M", span=False):
+def humantime(t=None, format="%Y-%m-%d %H:%M", span=False):
     '''
 
     %y 两位数的年份表示（00-99）
