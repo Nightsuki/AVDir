@@ -36,7 +36,8 @@
                 </div>
             </th>
             <th>{{ one.id }}</th>
-            <th>{{ one.title }}</th>
+            <th><a href="{% if one.type == 0 %}/archive/{{ one.slug }}{% else %}/
+                    {{ one.slug }}{% end %}">{{ one.title }}</a></th>
             <th>{{ one.author.nickname }}</th>
             <th>{% if one.type == 0 %}文章{% else %}单页{% end %}</th>
             <th>{% if one.status == 0 %}未发布{% else %}已经发布{% end %}</th>
