@@ -35,11 +35,11 @@ $(document).ready(function () {
             user_id: $('#user_id').val(),
             nickname: $('#nickname').val(),
             password: $('#password').val(),
-            mobilePhone: $('#mobilePhone').val(),
+            email: $('#email').val(),
             role: $('#role').val()
         };
         $.ajax({
-            url: '/admin/ajax/user',
+            url: '/ajax/user',
             type: "POST",
             contentType: "application/json",
             data: JSON.stringify(data),
@@ -47,6 +47,7 @@ $(document).ready(function () {
             success: function (r) {
                 if (r.status === "success") {
                     alert(r.result);
+                    window.location.href = "/admin/user/list"
                 }
                 else if (r.status === 'fail') {
                     alert(r.result);
@@ -58,19 +59,18 @@ $(document).ready(function () {
         });
     });
 
-    $("#user_delete_submit").click(function () {
+    $("#user_add_submit").click(function (e) {
         e.preventDefault();
-        var user_list = $("input:checked");
-        var user_id = [];
-        user_list.each(function () {
-            user_id.push($(this).val());
-        });
         var data = {
-            action: "delete",
-            user_id: user_id
+            action: "add",
+            user_id: $('#user_id').val(),
+            nickname: $('#nickname').val(),
+            password: $('#password').val(),
+            email: $('#email').val(),
+            role: $('#role').val()
         };
         $.ajax({
-            url: '/admin/ajax/user',
+            url: '/ajax/user',
             type: "POST",
             contentType: "application/json",
             data: JSON.stringify(data),
@@ -78,6 +78,7 @@ $(document).ready(function () {
             success: function (r) {
                 if (r.status === "success") {
                     alert(r.result);
+                    window.location.href = "/admin/user/list"
                 }
                 else if (r.status === 'fail') {
                     alert(r.result);
@@ -89,4 +90,65 @@ $(document).ready(function () {
         });
     });
 
+    $("#archive_add_submit").click(function (e) {
+        e.preventDefault();
+        var data = {
+            action: "add",
+            archive_id: $('#archive_id').val(),
+            title: $('#title').val(),
+            slug: $('#slug').val(),
+            type: $('#type').val(),
+            content: $('#content').find('textarea').val()
+        };
+        $.ajax({
+            url: '/ajax/archive',
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            dataType: 'JSON',
+            success: function (r) {
+                if (r.status === "success") {
+                    alert(r.result);
+                    window.location.href = "/admin/archive/list"
+                }
+                else if (r.status === 'fail') {
+                    alert(r.result);
+                }
+            },
+            error: function (r) {
+                alert(r.info);
+            }
+        });
+    });
+
+    $("#archive_edit_submit").click(function (e) {
+        e.preventDefault();
+        var data = {
+            action: "edit",
+            archive_id: $('#archive_id').val(),
+            title: $('#title').val(),
+            slug: $('#slug').val(),
+            type: $('#type').val(),
+            content: $('#content').find('textarea').val()
+        };
+        $.ajax({
+            url: '/ajax/archive',
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            dataType: 'JSON',
+            success: function (r) {
+                if (r.status === "success") {
+                    alert(r.result);
+                    window.location.href = "/admin/archive/list"
+                }
+                else if (r.status === 'fail') {
+                    alert(r.result);
+                }
+            },
+            error: function (r) {
+                alert(r.info);
+            }
+        });
+    });
 });

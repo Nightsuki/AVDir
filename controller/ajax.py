@@ -50,22 +50,41 @@ class AjaxHandler(BaseHandler):
         content = self.get_json_argument("content", default="")
         slug = self.get_json_argument("slug", default="")
         type = self.get_json_argument("type", default=0)
+        if action == "add":
+            if title and content and slug and type:
+                archive_query = Archive()
+                archive_query.user = self.current_user["id"]
+                archive_query.title = title
+                archive_query.content = content
+                archive_query.slug = slug
+                archive_query.type = type
+                archive_query.modified_time = int(time.time())
+                archive_query.published_time = int(time.time())
+                archive_query.status = 1
+                archive_query.save()
+                self._json("success", "发表成功")
+            self._json("fail", "请填写完整")
         if action == "edit":
             archive_query = Archive.select().where(Archive.id == archive_id).first()
-            if archive_id and archive_query:
+            if archive_id and archive_query and title and content and slug and type:
                 if self.current_user["id"] == archive_query.user.id or self.current_user["role"] == "Admin":
                     archive_query.title = title
                     archive_query.content = content
                     archive_query.slug = slug
                     archive_query.type = type
+                    archive_query.status = 1
                     archive_query.save()
-                    self._json("success")
+                    self._json("success", "修改成功")
+                self._json("fail", "无权操作")
+            self._json("fail", "请填写完整")
         if action == "del":
             archive_query = Archive.select().where(Archive.id == archive_id).first()
             if archive_id and archive_query:
                 if self.current_user["id"] == archive_query.user.id or self.current_user["role"] == "Admin":
                     archive_query.delete_instance()
-                    self._json("success")
+                    self._json("success", "删除成功")
+                self._json("success", "无权操作")
+            self._json("success", "不存在的文章")
         self._json("fail", "错误的姿势")
 
     @tornado.web.asynchronous

@@ -64,7 +64,7 @@ class Config(BaseModel):
     value = CharField(null=False, default="")
 
     def __init__(self, *args, **kwargs):
-        super(BaseModel, self).__init__(*args, **kwargs)
+        super(Config, self).__init__(*args, **kwargs)
 
     def __repr__(self):
         return '<Config({key!r})>'.format(key=self.key)
@@ -84,7 +84,7 @@ class User(BaseModel):
     last_ip = CharField(null=False, default="")
 
     def __init__(self, *args, **kwargs):
-        super(BaseModel, self).__init__(*args, **kwargs)
+        super(User, self).__init__(*args, **kwargs)
 
     @property
     def get_role(self):
@@ -129,7 +129,7 @@ class Tag(BaseModel):
     content = CharField(null=False, default="")
 
     def __init__(self, *args, **kwargs):
-        super(BaseModel, self).__init__(*args, **kwargs)
+        super(Tag, self).__init__(*args, **kwargs)
 
     def __repr__(self):
         return '<Tag({}!r})>'.format(self.content)
@@ -149,12 +149,12 @@ class Archive(BaseModel):
     published_time = IntegerField(null=False, default=0)
 
     def __init__(self, *args, **kwargs):
-        super(BaseModel, self).__init__(*args, **kwargs)
+        super(Archive, self).__init__(*args, **kwargs)
 
     def get_tags(self):
         query = Archive2Tag.select(Archive2Tag.tag_id).where(Archive2Tag.archive_id == self.id)
         tag_ids = [one.tag_id for one in query]
-        tag_query = Tag.select(Tag.content).where(Tag.id << tag_ids)
+        tag_query = Tag.select(Tag.content).where(Tag.id << tag_ids) if len(tag_ids) > 0 else []
         return [one.content for one in tag_query]
 
     def __repr__(self):

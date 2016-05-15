@@ -85,8 +85,6 @@ class UserEditHandler(AdminBaseHandler):
     @gen.coroutine
     @check_role(["User", "Admin"])
     def get(self, *args, **kwargs):
-        self.render("user_edit.html")
-
-
-
-
+        user = User.select().where(User.id == args).first()
+        if user:
+            self.render("user_edit.html", user=user)
