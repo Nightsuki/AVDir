@@ -67,6 +67,8 @@ class BaseHandler(tornado.web.RequestHandler):
         for one in self.site:
             if one not in kwargs:
                 kwargs[one] = self.site[one]
+        if template_name.endswith(".xml"):
+            return super(BaseHandler, self).render(template_name, **kwargs)
         return self.render_pjax(template_name, **kwargs)
 
     def redirect(self, url, permanent=False, status=None):
