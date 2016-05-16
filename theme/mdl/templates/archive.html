@@ -1,25 +1,34 @@
 {% block first_title %}{{ archive.title }}{% end %}
 
 {% block body %}
-    <article>
-      <h1 class="title"><a class="pjax" href="/archive/{{ archive.slug }}">{{ archive.title }}</a></h1>
-        <aside class="time">
-            Posted at <time datetime="{{ humantime(archive.published_time, '%Y-%m-%dT%H:%M:%S.000Z') }}">{{ humantime(archive.published_time, '%Y-%m-%d') }}</time>
-        </aside>
-        <section class="post-content">
-            {% raw markdown(archive.content) %}
-        </section>
-        <section class="post-tags">
-            {% if len(archive.tag) > 0 %}
-                <em>Tagged in:
-                    {% for tag in archive.tag %}
-                    <a class="pjax" href="/tag/{{ tag }}">{{ tag }}</a>
-                {% end %}
-                </em>
+<article>
+    <h1 class="title"><a class="pjax" href="/archive/{{ archive.slug }}">{{ archive.title }}</a></h1>
+    <aside class="time">
+        Posted at
+        <time datetime="{{ humantime(archive.published_time, '%Y-%m-%dT%H:%M:%S.000Z') }}">{{ humantime(archive.published_time, '%Y-%m-%d') }}</time>
+    </aside>
+    <section class="post-content">
+        {% raw markdown(archive.content) %}
+    </section>
+    {% if len(archive.tag) > 0 %}
+    <section class="post-tags">
+        <em>Tagged in:
+            {% for tag in archive.tag %}
+            <a class="pjax" href="/tag/{{ tag }}">{{ tag }}</a>
             {% end %}
-        </section>
-        <section class="post-comments">
-            {% include "comment.html" %}
-        </section>
-    </article>
+        </em>
+    </section>
+    {% end %}
+    <section class="post-content">
+        <em>Related to:</em>
+        <ul class="posts-group">
+            {% for one in archive.recommend_archive %}
+            <li><h6><a class="pjax" href="/archive/{{ one.slug }}">{{ one.title }}</a></h6></li>
+            {% end %}
+        </ul>
+    </section>
+    <section class="post-comments">
+        {% include "comment.html" %}
+    </section>
+</article>
 {% end %}

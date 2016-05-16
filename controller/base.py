@@ -67,7 +67,7 @@ class BaseHandler(tornado.web.RequestHandler):
         for one in self.site:
             if one not in kwargs:
                 kwargs[one] = self.site[one]
-        if template_name.endswith(".xml"):
+        if template_name.endswith(".xml") or "admin/" in self.get_template_path():
             return super(BaseHandler, self).render(template_name, **kwargs)
         return self.render_pjax(template_name, **kwargs)
 
