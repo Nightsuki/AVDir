@@ -69,7 +69,7 @@ class AjaxHandler(BaseHandler):
         if action == "edit":
             archive_query = Archive.select().where(Archive.id == archive_id).first()
             if archive_id and archive_query and title and content and slug and type:
-                if self.current_user["id"] == archive_query.user.id or self.current_user["role"] == "Admin":
+                if self.current_user["id"] == archive_query.author.id or self.current_user["role"] == "Admin":
                     archive_query.title = title
                     archive_query.content = content
                     archive_query.tag = tags

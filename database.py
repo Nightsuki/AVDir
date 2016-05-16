@@ -164,6 +164,7 @@ class Archive(BaseModel):
             query.save()
         return query
 
+    @property
     def tag_text(self):
         tag_list = self.tag
         result = ""
