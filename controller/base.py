@@ -1,5 +1,6 @@
 # coding=utf-8
 import tornado.web
+import os
 from util.function import humantime, json, time_span, markdown
 
 
@@ -66,7 +67,7 @@ class BaseHandler(tornado.web.RequestHandler):
         for one in self.site:
             if one not in kwargs:
                 kwargs[one] = self.site[one]
-        return super(BaseHandler, self).render(template_name, **kwargs)
+        return self.render_pjax(template_name, **kwargs)
 
     def redirect(self, url, permanent=False, status=None):
         super(BaseHandler, self).redirect(url, permanent, status)
@@ -77,6 +78,35 @@ class BaseHandler(tornado.web.RequestHandler):
             return self.request.headers.get('X-Forwarded-For')
         else:
             return self.request.remote_ip
+
+    def _get_loader(self):
+        template_path = self.get_template_path()
+        with tornado.web.RequestHandler._template_loader_lock:
+            if template_path not in tornado.web.RequestHandler._template_loaders:
+                loader = self.create_template_loader(template_path)
+                tornado.web.RequestHandler._template_loaders[template_path] = loader
+            else:
+                loader = tornado.web.RequestHandler._template_loaders[template_path]
+        return loader
+
+    def render_pjax(self, template_name, **kwargs):
+        BASE_DIR = os.path.dirname(os.path.realpath(__file__))
+        PJAX_TEMPLATE = '''
+        {{% extends "{0}/../theme/mdl/templates/{1}.html" %}}
+        {{% include "{0}/../theme/mdl/templates/{2}" %}}
+        '''
+        if not self.is_pjax:
+            loader = self._get_loader()
+            template = PJAX_TEMPLATE.format(BASE_DIR, "layout", template_name)
+            namespace = self.get_template_namespace()
+            namespace.update(kwargs)
+            self.write(tornado.web.template.Template(template, loader=loader).generate(**namespace))
+        else:
+            loader = self._get_loader()
+            template = PJAX_TEMPLATE.format(BASE_DIR, "pjax_layout", template_name)
+            namespace = self.get_template_namespace()
+            namespace.update(kwargs)
+            self.write(tornado.web.template.Template(template, loader=loader).generate(**namespace))
 
 
 class NotFoundHandler(BaseHandler):

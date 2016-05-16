@@ -15,7 +15,8 @@ class ArchiveHandler(BaseHandler):
         try:
             archive = Archive.get((Archive.slug == slug) & (Archive.type == 0))
             self.render("archive.html", archive=archive)
-        except:
+        except Exception as e:
+            print(e)
             self.redirect("/diracsea")
 
 
