@@ -50,6 +50,7 @@ class AjaxHandler(BaseHandler):
         content = self.get_json_argument("content", default="")
         slug = self.get_json_argument("slug", default="")
         type = self.get_json_argument("type", default=0)
+        tags = self.get_json_argument("tags", default=[])
         if action == "add":
             if title and content and slug and type:
                 archive_query = Archive()
@@ -62,6 +63,7 @@ class AjaxHandler(BaseHandler):
                 archive_query.published_time = int(time.time())
                 archive_query.status = 1
                 archive_query.save()
+                archive_query.tag = tags
                 self._json("success", "发表成功")
             self._json("fail", "请填写完整")
         if action == "edit":
@@ -70,6 +72,7 @@ class AjaxHandler(BaseHandler):
                 if self.current_user["id"] == archive_query.user.id or self.current_user["role"] == "Admin":
                     archive_query.title = title
                     archive_query.content = content
+                    archive_query.tag = tags
                     archive_query.slug = slug
                     archive_query.type = type
                     archive_query.status = 1
@@ -81,6 +84,7 @@ class AjaxHandler(BaseHandler):
             archive_query = Archive.select().where(Archive.id == archive_id).first()
             if archive_id and archive_query:
                 if self.current_user["id"] == archive_query.author.id or self.current_user["role"] == "Admin":
+                    del archive_query.tag
                     archive_query.delete_instance()
                     self._json("success", "删除成功")
                 self._json("success", "无权操作")

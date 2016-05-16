@@ -6,7 +6,7 @@ import time
 import sys
 import yaml
 import os
-import json
+from controller.tag import TagHandle
 
 
 if os.environ.get("AVDIR_ENV") == 'prod':
@@ -151,16 +151,54 @@ class Archive(BaseModel):
     def __init__(self, *args, **kwargs):
         super(Archive, self).__init__(*args, **kwargs)
 
-    @property
-    def author(self):
-        user = User.select().where(User.id == self.user_id).first()
-        return user
+    @staticmethod
+    def tag_exist(name):
+        query = Tag.select().where(Tag.content == name).first()
+        return query if query else False
 
-    def get_tags(self):
+    def insert_tag(self, name):
+        query = self.tag_exist(name)
+        if not query:
+            query = Tag()
+            query.content = name
+            query.save()
+        return query
+
+    def tag_text(self):
+        tag_list = self.tag
+        result = ""
+        if len(tag_list) > 0:
+            result = tag_list[0]
+        for i in range(1, len(tag_list)):
+            result += ",{}".format(tag_list[i])
+        return result
+
+    @property
+    def tag(self):
         query = Archive2Tag.select(Archive2Tag.tag_id).where(Archive2Tag.archive_id == self.id)
         tag_ids = [one.tag_id for one in query]
         tag_query = Tag.select(Tag.content).where(Tag.id << tag_ids) if len(tag_ids) > 0 else []
         return [one.content for one in tag_query]
+
+    @tag.setter
+    def tag(self, tag_list):
+        archive2tag_query = Archive2Tag.delete().where(Archive2Tag.archive_id == self.id)
+        archive2tag_query.execute()
+        new_insert = []
+        for one in tag_list:
+            query = self.insert_tag(one)
+            new_insert.append({"tag_id": query.id, "archive_id": self.id})
+        Archive2Tag.insert_many(new_insert).execute()
+
+    @tag.deleter
+    def tag(self):
+        archive2tag_query = Archive2Tag.delete().where(Archive2Tag.archive_id == self.id)
+        archive2tag_query.execute()
+
+    @property
+    def author(self):
+        user = User.select().where(User.id == self.user_id).first()
+        return user
 
     def __repr__(self):
         return '<Archive({title!r})>'.format(title=self.title)

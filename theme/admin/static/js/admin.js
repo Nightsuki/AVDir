@@ -95,13 +95,19 @@ $(document).ready(function () {
 
     $("#archive_add_submit").click(function (e) {
         e.preventDefault();
+        var tag_list = $('#tags').tokenfield('getTokens');
+        var tags = [];
+        tag_list.forEach(function (one) {
+            tags.push(one.value);
+        });
         var data = {
             action: "add",
             archive_id: $('#archive_id').val(),
             title: $('#title').val(),
             slug: $('#slug').val(),
             type: $('#type').val(),
-            content: $('#content').find('textarea').val()
+            content: $('#content').find('textarea').val(),
+            tags: tags
         };
         $.ajax({
             url: '/ajax/archive',
@@ -126,13 +132,19 @@ $(document).ready(function () {
 
     $("#archive_edit_submit").click(function (e) {
         e.preventDefault();
+        var tag_list = $('#tags').tokenfield('getTokens');
+        var tags = [];
+        tag_list.forEach(function (one) {
+            tags.push(one.value);
+        });
         var data = {
             action: "edit",
             archive_id: $('#archive_id').val(),
             title: $('#title').val(),
             slug: $('#slug').val(),
             type: $('#type').val(),
-            content: $('#content').find('textarea').val()
+            content: $('#content').find('textarea').val(),
+            tags: tags
         };
         $.ajax({
             url: '/ajax/archive',
