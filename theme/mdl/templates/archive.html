@@ -11,9 +11,9 @@
             {% raw markdown(archive.content) %}
         </section>
         <section class="post-tags">
-            {% if len(archive.get_tags()) > 0 %}
+            {% if len(archive.tag) > 0 %}
                 <em>Tagged in:
-                {% for tag in archive.get_tags() %}
+                    {% for tag in archive.tag %}
                     <a class="pjax" href="/tag/{{ tag }}">{{ tag }}</a>
                 {% end %}
                 </em>
