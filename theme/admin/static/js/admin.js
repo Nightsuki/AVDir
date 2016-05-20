@@ -65,7 +65,7 @@ $(document).ready(function () {
         var data = {
             action: "add",
             user_id: $('#user_id').val(),
-            username: $('#nickname').val(),
+            username: $('#username').val(),
             nickname: $('#nickname').val(),
             password: $('#password').val(),
             email: $('#email').val(),
