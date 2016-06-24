@@ -151,17 +151,6 @@ class Archive(BaseModel):
     def __init__(self, *args, **kwargs):
         super(Archive, self).__init__(*args, **kwargs)
 
-    @property
-    def recommend_archive(self):
-        tag_ids = self.tag_ids
-        result = []
-        if len(tag_ids) > 0:
-            query = Archive2Tag.select().where((Archive2Tag.tag_id << tag_ids) & (Archive2Tag.archive_id != self.id))
-            archive_ids = [one.archive_id for one in query]
-            if len(archive_ids) > 0:
-                result = Archive.select(Archive.title, Archive.slug).where(Archive.id << archive_ids)
-        return result
-
     @staticmethod
     def tag_exist(name):
         query = Tag.select().where(Tag.content == name).first()
