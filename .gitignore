@@ -21,5 +21,6 @@ config.yaml
 *.lib
 *.sbr
 .idea/
+.vscode/
 *.pyc
 *.DS_Store

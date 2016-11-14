@@ -33,7 +33,7 @@ class IndexHandler(AdminBaseHandler):
     @check_role(["User", "Admin"])
     def get(self, *args, **kwargs):
         self.render("index.html")
-        
+
 
 class ArchiveListHandler(AdminBaseHandler):
     @tornado.web.asynchronous

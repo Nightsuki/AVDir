@@ -12,7 +12,7 @@ class MainHandler(BaseHandler):
     @gen.coroutine
     def get(self, *args, **kwargs):
         count = Archive.select().count()
-        maxpage = count / 6 + 1
+        maxpage = int(count / 6) + 1
         archives = Archive.select().where((Archive.status == 1) & (Archive.type == 0)).order_by(
             Archive.created_time.desc()).offset(0).limit(6)
         self.render("list.html", archives=archives, maxpage=maxpage, page=1)

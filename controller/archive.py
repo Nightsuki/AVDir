@@ -1,6 +1,6 @@
 # coding=utf-8
 import tornado.web
-from controller.base import BaseHandler, NotFoundHandler
+from controller.base import BaseHandler
 from tornado import gen
 from database import *
 from itertools import groupby
