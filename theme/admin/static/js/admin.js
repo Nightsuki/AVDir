@@ -106,6 +106,7 @@ $(document).ready(function () {
             title: $('#title').val(),
             slug: $('#slug').val(),
             type: $('#type').val(),
+            status: $('#status').val(),
             content: $('#content').find('textarea').val(),
             tags: tags
         };
@@ -143,6 +144,7 @@ $(document).ready(function () {
             title: $('#title').val(),
             slug: $('#slug').val(),
             type: $('#type').val(),
+            status: $('#status').val(),
             content: $('#content').find('textarea').val(),
             tags: tags
         };

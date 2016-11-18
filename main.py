@@ -35,6 +35,7 @@ try:
         config = yaml.load(fin)
     theme = config["site"]["theme"]
     setting["site"] = config["site"]
+    setting["qiniu"] = config["qiniu"]
     setting["static_path"] = os.path.join(os.path.abspath(os.path.dirname(__file__)), "theme/{}/static".format(theme))
     setting["static_admin_path"] = os.path.join(os.path.abspath(os.path.dirname(__file__)), "theme/admin/static")
     setting["template_path"] = os.path.join(os.path.abspath(os.path.dirname(__file__)),
@@ -75,10 +76,8 @@ if __name__ == "__main__":
     try:
         application.listen(tornado.options.options.port)
         tornado.ioloop.IOLoop.instance().start()
-    except Exception as e:
-        print(e)
+    except:
         import traceback
-
         print(traceback.print_exc())
     finally:
         sys.exit(0)

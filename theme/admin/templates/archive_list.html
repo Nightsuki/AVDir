@@ -8,7 +8,7 @@
         <thead>
         <tr>
             <th>删除</th>
-            <th>编辑</th>
+            <th>浏览</th>
             <th>序号</th>
             <th>标题</th>
             <th>作者</th>
@@ -31,13 +31,12 @@
             <th>
                 <div class="control-group">
                     <div class="controls">
-                        <a class="btn btn-success" href="/admin/archive/edit/{{ one.id }}">编辑</a>
+                        <a class="btn btn-success" href="{% if one.type == 0 %}/archive/{{ one.slug }}{% else %}/{{ one.slug }}{% end %}">浏览</a>
                     </div>
                 </div>
             </th>
             <th>{{ one.id }}</th>
-            <th><a href="{% if one.type == 0 %}/archive/{{ one.slug }}{% else %}/
-                    {{ one.slug }}{% end %}">{{ one.title }}</a></th>
+            <th><a href="/admin/archive/edit/{{ one.id }}">{{ one.title }}</a></th>
             <th>{{ one.author.nickname }}</th>
             <th>{% if one.type == 0 %}文章{% else %}单页{% end %}</th>
             <th>{% if one.status == 0 %}未发布{% else %}已经发布{% end %}</th>

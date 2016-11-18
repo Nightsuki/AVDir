@@ -147,5 +147,3 @@ def random_str(randomlength=12):
     a = list(string.ascii_letters + string.digits)
     random.shuffle(a)
     return ''.join(a[:randomlength])
-
-

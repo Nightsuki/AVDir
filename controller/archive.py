@@ -13,10 +13,9 @@ class ArchiveHandler(BaseHandler):
     def get(self, *args, **kwargs):
         slug = args[0]
         try:
-            archive = Archive.get((Archive.slug == slug) & (Archive.type == 0))
+            archive = Archive.get((Archive.slug == slug) & (Archive.type == 0) & (Archive.status == 1))
             self.render("archive.html", archive=archive)
-        except Exception as e:
-            print(e)
+        except:
             self.redirect("/diracsea")
 
 
@@ -26,7 +25,7 @@ class PageHandler(BaseHandler):
     def get(self, *args, **kwargs):
         slug = args[0]
         try:
-            archive = Archive.get((Archive.slug == slug) & (Archive.type == 1))
+            archive = Archive.get((Archive.slug == slug) & (Archive.type == 1) & (Archive.status == 1))
             self.render("page.html", archive=archive)
         except:
             self.redirect("/diracsea")

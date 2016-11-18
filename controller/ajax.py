@@ -50,6 +50,7 @@ class AjaxHandler(BaseHandler):
         content = self.get_json_argument("content", default="")
         slug = self.get_json_argument("slug", default="")
         type = self.get_json_argument("type", default=0)
+        status = self.get_json_argument("status", default=0)
         tags = self.get_json_argument("tags", default=[])
         if action == "add":
             if title and content and slug and type:
@@ -59,9 +60,9 @@ class AjaxHandler(BaseHandler):
                 archive_query.content = content
                 archive_query.slug = slug
                 archive_query.type = type
+                archive_query.status = status
                 archive_query.modified_time = int(time.time())
                 archive_query.published_time = int(time.time())
-                archive_query.status = 1
                 archive_query.save()
                 archive_query.tag = tags
                 self._json("success", "发表成功")
@@ -75,7 +76,8 @@ class AjaxHandler(BaseHandler):
                     archive_query.tag = tags
                     archive_query.slug = slug
                     archive_query.type = type
-                    archive_query.status = 1
+                    archive_query.status = status
+                    archive_query.modified_time = int(time.time())
                     archive_query.save()
                     self._json("success", "修改成功")
                 self._json("fail", "无权操作")
