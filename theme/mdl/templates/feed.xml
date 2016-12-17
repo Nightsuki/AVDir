@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 <title>{{ nickname }}</title>
 <subtitle>{{ title }}</subtitle>
-<updated>{{ humantime(archives.first().published_time, '%Y-%m-%d') }}</updated>
+{% if archives.first() %}<updated>{{ humantime(archives.first().published_time, '%Y-%m-%d') }}</updated>{% end %}
 
 <author>
     <name><![CDATA[ {{ nickname }} ]]></name>
