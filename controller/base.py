@@ -1,7 +1,8 @@
 # coding=utf-8
 import tornado.web
-import os
+import os, time
 from util.function import humantime, json, time_span, markdown
+from qiniu import Auth, put_data
 
 
 class BaseHandler(tornado.web.RequestHandler):
@@ -9,6 +10,18 @@ class BaseHandler(tornado.web.RequestHandler):
         super(BaseHandler, self).__init__(application, request, **kwargs)
         self.site = self.settings.get("site")
         self.is_pjax = False
+
+    def upload(self, data, filename):
+        config = self.settings.get("qiniu")
+        access_key = config["access_key"]
+        secret_key = config["secret_key"]
+        bucket_name = config["bucket_name"]
+        q = Auth(access_key, secret_key)
+        filename = "{}/{}".format(humantime(time.time(), "%Y%m%d%H%M"), filename)
+        token = q.upload_token(bucket_name, filename, 60)
+        ret, info = put_data(token, filename, data)
+        url = "//{}/{}".format(config["domain"], ret["key"]) if ret else None
+        return url
 
     def prepare(self):
         self.set_header("X-XSS-Protection", "1; mode=block")

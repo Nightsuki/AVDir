@@ -60,6 +60,7 @@ application = tornado.web.Application([
     (r"^/admin", "controller.admin.IndexHandler"),
     (r"^/admin/login", "controller.admin.LoginHandler"),
     (r"^/admin/logout", "controller.admin.LogoutHandler"),
+    (r"^/admin/upload", "controller.admin.UploadHandler"),
     (r"^/admin/archive/add", "controller.admin.ArchiveAddHandler"),
     (r"^/admin/archive/edit/([0-9]+)", "controller.admin.ArchiveEditHandler"),
     (r"^/admin/archive/list", "controller.admin.ArchiveListHandler"),

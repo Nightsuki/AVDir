@@ -1,5 +1,6 @@
 # coding=utf-8
 import os
+import json
 import tornado.web
 from controller.base import BaseHandler
 from tornado import gen
@@ -61,6 +62,23 @@ class ArchiveEditHandler(AdminBaseHandler):
         archive = Archive.select().where(Archive.id == archive_id).first()
         if archive:
             self.render("archive_edit.html", archive=archive)
+
+
+class UploadHandler(AdminBaseHandler):
+    @tornado.web.asynchronous
+    @gen.coroutine
+    @check_role(["User", "Admin"])
+    def post(self, *args, **kwargs):
+        result = {"success": 0, "message": "上传失败"}
+        if self.request.files:
+            content = self.request.files["editormd-image-file"][0]["body"]
+            filename = self.request.files["editormd-image-file"][0]["filename"]
+            url = self.upload(content, filename)
+            if url:
+                result = {"success": 1,
+                          "message": "上传成功",
+                          "url": url}
+        return self.write(json.dumps(result))
 
 
 class UserListHandler(AdminBaseHandler):

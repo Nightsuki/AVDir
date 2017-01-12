@@ -65,6 +65,9 @@
             $(function () {
                 editor = editormd("content", {
                     height: 500,
+                    imageUpload : true,
+                    imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+                    imageUploadURL : "/admin/upload",
                     path: "{{ static_admin_url('editor.md/lib/') }}"
                 });
                 $('#tags').tokenfield()
