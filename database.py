@@ -1,13 +1,11 @@
 # coding=utf-8
 from peewee import *
-from playhouse.shortcuts import RetryOperationalError
 from werkzeug.security import generate_password_hash, check_password_hash
 import time
 import sys
 import yaml
 import os
 from controller.tag import TagHandle
-
 
 if os.environ.get("AVDIR_ENV") == 'prod':
     config_env = "prod"
@@ -24,18 +22,13 @@ except:
     print("cannot found config.yaml file")
     sys.exit(0)
 
-
-class RetryDB(RetryOperationalError, MySQLDatabase):
-    pass
-
-
 try:
-    db = RetryDB(config["database"][config_env]["dbname"],
-                 user=config["database"][config_env]["user"],
-                 host=config["database"][config_env]["host"],
-                 port=config["database"][config_env]["port"],
-                 password=config["database"][config_env]["password"],
-                 autocommit=True, autorollback=True)
+    db = MySQLDatabase(config["database"][config_env]["dbname"],
+                       user=config["database"][config_env]["user"],
+                       host=config["database"][config_env]["host"],
+                       port=config["database"][config_env]["port"],
+                       password=config["database"][config_env]["password"],
+                       autocommit=True, autorollback=True)
 except:
     print("cannot connect Mysql, check the config.yaml")
     sys.exit(0)

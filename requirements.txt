@@ -1,7 +1,6 @@
 tornado
 redis
 pyyaml
-futures
 pymysql
 peewee
 werkzeug
