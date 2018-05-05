@@ -184,7 +184,7 @@ function user_del(user_id) {
         success: function (r) {
             if (r.status === "success") {
                 alert(r.result);
-                window.location.href = "/admin/user/list"
+                location.reload()
             }
             else if (r.status === 'fail') {
                 alert(r.result);

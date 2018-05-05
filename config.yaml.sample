@@ -7,6 +7,10 @@
   "nickname": "Nightsuki"
   "avatar": "https://ymr.me/logo.png"
   "url": "https://ymr.me/"
+"qiniu":
+  "access_key": "111"
+  "secret_key": "111"
+  "bucket_name": "ymr-me"
 "database":
   "dev":
       "host": "localhost"

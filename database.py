@@ -182,13 +182,14 @@ class Archive(BaseModel):
 
     @tag.setter
     def tag(self, tag_list):
-        archive2tag_query = Archive2Tag.delete().where(Archive2Tag.archive_id == self.id)
-        archive2tag_query.execute()
-        new_insert = []
-        for one in tag_list:
-            query = self.insert_tag(one)
-            new_insert.append({"tag_id": query.id, "archive_id": self.id})
-        Archive2Tag.insert_many(new_insert).execute()
+        if tag_list:
+            archive2tag_query = Archive2Tag.delete().where(Archive2Tag.archive_id == self.id)
+            archive2tag_query.execute()
+            new_insert = []
+            for one in tag_list:
+                query = self.insert_tag(one)
+                new_insert.append({"tag_id": query.id, "archive_id": self.id})
+            Archive2Tag.insert_many(new_insert).execute()
 
     @tag.deleter
     def tag(self):
