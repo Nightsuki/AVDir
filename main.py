@@ -7,7 +7,6 @@ import os
 import yaml
 from concurrent import futures
 import controller.base
-import redis
 
 tornado.options.define("port", default=5555, help="Run server on a specific port", type=int)
 tornado.options.parse_command_line()
@@ -22,11 +21,12 @@ setting = {
     "thread_pool": futures.ThreadPoolExecutor(4)
 }
 
-if os.environ.get("AVDIR_ENV") == 'prod':
-    config_env = "prod"
-else:
-    config_env = "dev"
+if os.environ.get("AVDIR_ENV") == 'dev':
     setting["serve_traceback"] = True
+    config_env = "dev"
+else:
+    config_env = "prod"
+
 print(config_env)
 
 config = {}
